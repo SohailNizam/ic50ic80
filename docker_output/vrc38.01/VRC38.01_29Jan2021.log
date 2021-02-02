@@ -1,0 +1,58 @@
+--- Checking options --- 
+--- Building analytic data set from CATNAP database --- 
+--- Fitting learners --- 
+Loading required package: nnls
+Super Learner
+Version: 2.0-26
+Package created on 2019-10-27
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+[1] "Fitting IC-50"
+Loading required package: quadprog
+Loading required namespace: ranger
+Loading required namespace: xgboost
+Loading required namespace: glmnet
+Growing trees.. Progress: 83%. Estimated remaining time: 6 seconds.
+Growing trees.. Progress: 43%. Estimated remaining time: 41 seconds.
+Growing trees.. Progress: 42%. Estimated remaining time: 42 seconds.
+Growing trees.. Progress: 84%. Estimated remaining time: 12 seconds.
+Growing trees.. Progress: 63%. Estimated remaining time: 18 seconds.
+Growing trees.. Progress: 57%. Estimated remaining time: 23 seconds.
+Growing trees.. Progress: 57%. Estimated remaining time: 23 seconds.
+Growing trees.. Progress: 56%. Estimated remaining time: 24 seconds.
+Growing trees.. Progress: 55%. Estimated remaining time: 25 seconds.
+Growing trees.. Progress: 56%. Estimated remaining time: 23 seconds.
+Growing trees.. Progress: 83%. Estimated remaining time: 6 seconds.
+Growing trees.. Progress: 42%. Estimated remaining time: 42 seconds.
+Growing trees.. Progress: 60%. Estimated remaining time: 21 seconds.
+Growing trees.. Progress: 56%. Estimated remaining time: 23 seconds.
+Growing trees.. Progress: 59%. Estimated remaining time: 21 seconds.
+Growing trees.. Progress: 82%. Estimated remaining time: 6 seconds.
+Growing trees.. Progress: 56%. Estimated remaining time: 24 seconds.
+Growing trees.. Progress: 60%. Estimated remaining time: 20 seconds.
+Growing trees.. Progress: 61%. Estimated remaining time: 19 seconds.
+Growing trees.. Progress: 62%. Estimated remaining time: 19 seconds.
+Growing trees.. Progress: 63%. Estimated remaining time: 18 seconds.
+Growing trees.. Progress: 66%. Estimated remaining time: 16 seconds.
+Growing trees.. Progress: 64%. Estimated remaining time: 17 seconds.
+Growing trees.. Progress: 65%. Estimated remaining time: 16 seconds.
+Growing trees.. Progress: 63%. Estimated remaining time: 18 seconds.
+Growing trees.. Progress: 87%. Estimated remaining time: 4 seconds.
+[1] "Fitting IC-80"
+Error in SuperLearner(Y = newdat[, outcome_name], X = pred, SL.library = SL.library,  : 
+  the outcome Y must be a numeric vector
+Calls: sl_one_outcome -> SuperLearner
+In addition: Warning message:
+In (function (Y, X, V = NULL, family = gaussian(), SL.library, method = "method.NNLS",  :
+  Only a single innerCvControl is given, will be replicated across all cross-validation split calls to SuperLearner
+Execution halted

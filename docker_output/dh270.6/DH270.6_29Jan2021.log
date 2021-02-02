@@ -1,0 +1,38 @@
+--- Checking options --- 
+--- Building analytic data set from CATNAP database --- 
+--- Fitting learners --- 
+Loading required package: nnls
+Super Learner
+Version: 2.0-26
+Package created on 2019-10-27
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+[1] "Fitting IC-50"
+Loading required package: quadprog
+Loading required namespace: ranger
+Loading required namespace: xgboost
+Loading required namespace: glmnet
+Growing trees.. Progress: 80%. Estimated remaining time: 7 seconds.
+Growing trees.. Progress: 76%. Estimated remaining time: 10 seconds.
+Growing trees.. Progress: 82%. Estimated remaining time: 6 seconds.
+Growing trees.. Progress: 78%. Estimated remaining time: 8 seconds.
+Growing trees.. Progress: 100%. Estimated remaining time: 0 seconds.
+Growing trees.. Progress: 78%. Estimated remaining time: 8 seconds.
+[1] "Fitting IC-80"
+Error in SuperLearner(Y = newdat[, outcome_name], X = pred, SL.library = SL.library,  : 
+  the outcome Y must be a numeric vector
+Calls: sl_one_outcome -> SuperLearner
+In addition: Warning message:
+In (function (Y, X, V = NULL, family = gaussian(), SL.library, method = "method.NNLS",  :
+  Only a single innerCvControl is given, will be replicated across all cross-validation split calls to SuperLearner
+Execution halted
