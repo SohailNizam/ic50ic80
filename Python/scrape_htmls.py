@@ -51,10 +51,17 @@ def scrape_tables(bnabs):
         path += bnab
         #report_path = path + "/report_" + bnab.upper() + "_" + date + ".html"
         
-        #pick out the file that starts with 'report' ends with '.html'
-        #this method is not date specific
-        report_path = glob(path + "/report*.html")[0]
-        report = open(report_path).read()
+        
+        #if the container failed, the dir does not have a report
+        try:
+            #pick out the file that starts with 'report' ends with '.html'
+            #this method is not date specific
+            report_path = glob(path + "/report*.html")[0]
+            report = open(report_path).read()
+            
+        except IndexError:
+            
+            break
         
         #scrape the html with beautiful soup
         soup = BeautifulSoup(report)
@@ -98,5 +105,8 @@ result_df = scrape_tables(bnabs)
         
 #write to csv
 result_df.to_csv("./Python/cvr2_df.csv")
+ 
+
+    
     
     
