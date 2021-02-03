@@ -24,11 +24,11 @@ compare_tib <- rslt_df %>%
   mutate(
     bnab = toupper(bnab),
     epitope = case_when(
-      bnab %in% c("2G12", "PG16", "PG9", "PGDM1400",
+      bnab %in% c("PG16", "PG9", "PGDM1400",
                   "PGT145", "VRC26.08", "VRC26.25") ~ "V1V2",
       bnab %in% c("10-1074", "10-996", "DH270.1",
                   "DH270.5", "DH270.6", "PGT121", "PGT128",
-                  "PGT135", "VRC29.03", "VRC38.01") ~ "V3",
+                  "PGT135", "VRC29.03", "VRC38.01", "2G12") ~ "V3",
       bnab %in% c("3BNC117", "B12", "CH01",
                   "HJ16", "NIH45-46", "VRC-CH31", "VRC-PG04",
                   "VRC01", "VRC03", "VRC07") ~ "CD4bs",
