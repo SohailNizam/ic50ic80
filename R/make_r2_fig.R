@@ -97,6 +97,8 @@ subunit_plot <- compare_tib %>%
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              size = point_size) +
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
   labs(y = NULL) +
@@ -112,6 +114,8 @@ v1v2_plot <- compare_tib %>%
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              size = point_size) +
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
   ylab("CV-R2") +
@@ -126,7 +130,9 @@ v3_plot <- compare_tib %>%
              y = r2, ymin = cil, ymax = ciu, shape = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             size = point_size) + 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) + 
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
   labs(y = NULL) +
