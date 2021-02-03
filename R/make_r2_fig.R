@@ -51,14 +51,17 @@ cd4bs_plot <- compare_tib %>%
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              size = point_size) +
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
-  ylab("CV-R2") + 
+  ylab(expression(paste("CV-", R^2))) + 
   ggtitle("CD4bs") +
   xlab("") +
   #labs(y = NULL) +
   guides(x = guide_axis(n.dodge = 2), shape = FALSE) +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 fusion_plot <- compare_tib %>%
   filter(epitope == "Fusion peptide") %>%
@@ -67,13 +70,16 @@ fusion_plot <- compare_tib %>%
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              size = point_size) +
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
   labs(y = NULL) +
   ggtitle("Fusion peptide") +
   xlab("") +
   guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 mper_plot <- compare_tib %>%
   filter(epitope == "MPER") %>%
@@ -82,13 +88,16 @@ mper_plot <- compare_tib %>%
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              size = point_size) +
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+                position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
   labs(y = NULL) +
   ggtitle("MPER") +
   xlab("") +
   guides(x = guide_axis(n.dodge = 2), y = "none") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 subunit_plot <- compare_tib %>%
   filter(epitope == "Subunit interface") %>%
@@ -105,7 +114,8 @@ subunit_plot <- compare_tib %>%
   ggtitle("Subunit interface") +
   xlab("") +
   guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none") +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 v1v2_plot <- compare_tib %>%
   filter(epitope == "V1V2") %>%
@@ -118,11 +128,12 @@ v1v2_plot <- compare_tib %>%
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
-  ylab("CV-R2") +
+  ylab(expression(paste("CV-", R^2))) +
   ggtitle("V1V2") +
   xlab("") +
   guides(x = guide_axis(n.dodge = 2), shape = FALSE) +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 v3_plot <- compare_tib %>%
   filter(epitope == "V3") %>%
@@ -139,7 +150,8 @@ v3_plot <- compare_tib %>%
   ggtitle("V3") +
   xlab("") +
   guides(x = guide_axis(n.dodge = 2), y = "none", shape = FALSE) +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.title.x = element_blank())
 
 
 compare_plot <- plot_grid(
@@ -150,8 +162,10 @@ compare_plot <- plot_grid(
     nrow = 2
   ),
   ggplot() + ggtitle("bnAb") + guides(x = "none", y = "none") +
-    theme(plot.title = element_text(hjust = 0.5, face = "plain")),
-  nrow = 2, rel_heights = c(1, 0.1)
+    theme(plot.title = element_text(hjust = 0.5, face = "plain", size = 18)),
+  nrow = 2, rel_heights = c(1, 0.02)
 )
 
-
+ggsave(filename = "./R_output/r2_fig.png",
+       plot = compare_plot,
+       width = 45, height = 20, units = "cm")
