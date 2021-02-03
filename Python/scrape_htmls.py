@@ -61,7 +61,7 @@ def scrape_tables(bnabs):
             
         except IndexError:
             
-            break
+            continue
         
         #scrape the html with beautiful soup
         soup = BeautifulSoup(report)
