@@ -18,7 +18,6 @@ library("here")
 rslt_df <- read.csv(file = "./Python/cvr2_df.csv")
 rslt_df <- rslt_df[complete.cases(rslt_df), ] #remove any NA rows
 
-
 compare_tib <- rslt_df %>%
   as_tibble() %>%
   mutate(
@@ -42,15 +41,16 @@ compare_tib <- rslt_df %>%
 # Create the plot
 # --------------------------------------------------------------------------
 epitope_labs <- unique(compare_tib$epitope)[order(unique(compare_tib$epitope), decreasing = TRUE)]
-point_size <- 2
+#point_size <- 2
 
 cd4bs_plot <- compare_tib %>%
   filter(epitope == "CD4bs") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             aes(size = n), show.legend = FALSE) +
+  #geom_text(aes(label = n, hjust = 1.5)) + 
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -59,17 +59,17 @@ cd4bs_plot <- compare_tib %>%
   ggtitle("CD4bs") +
   xlab("") +
   #labs(y = NULL) +
-  guides(x = guide_axis(n.dodge = 2), shape = FALSE) +
+  guides(x = guide_axis(n.dodge = 2), shape = FALSE, color = FALSE) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_blank())
 
 fusion_plot <- compare_tib %>%
   filter(epitope == "Fusion peptide") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -77,17 +77,17 @@ fusion_plot <- compare_tib %>%
   labs(y = NULL) +
   ggtitle("Fusion peptide") +
   xlab("") +
-  guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none") +
+  guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none", color = FALSE) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_blank())
 
 mper_plot <- compare_tib %>%
   filter(epitope == "MPER") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             aes(size = n)) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -102,10 +102,10 @@ mper_plot <- compare_tib %>%
 subunit_plot <- compare_tib %>%
   filter(epitope == "Subunit interface") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -113,17 +113,17 @@ subunit_plot <- compare_tib %>%
   labs(y = NULL) +
   ggtitle("Subunit interface") +
   xlab("") +
-  guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none") +
+  guides(x = guide_axis(n.dodge = 2), shape = FALSE, y = "none", color = FALSE) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_blank())
 
 v1v2_plot <- compare_tib %>%
   filter(epitope == "V1V2") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) +
+             aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -131,17 +131,17 @@ v1v2_plot <- compare_tib %>%
   ylab(expression(paste("CV-", R^2))) +
   ggtitle("V1V2") +
   xlab("") +
-  guides(x = guide_axis(n.dodge = 2), shape = FALSE) +
+  guides(x = guide_axis(n.dodge = 2), shape = FALSE, color = FALSE) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_blank())
 
 v3_plot <- compare_tib %>%
   filter(epitope == "V3") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, shape = method,
+             y = r2, ymin = cil, ymax = ciu, color = method,
              group = paste0(epitope, "_", method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
-             size = point_size) + 
+             aes(size = n), show.legend = FALSE) + 
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
                 position = position_dodge(width = 0.75, preserve = "total")) + 
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
@@ -149,7 +149,7 @@ v3_plot <- compare_tib %>%
   labs(y = NULL) +
   ggtitle("V3") +
   xlab("") +
-  guides(x = guide_axis(n.dodge = 2), y = "none", shape = FALSE) +
+  guides(x = guide_axis(n.dodge = 2), y = "none", shape = FALSE, color = FALSE) +
   theme(plot.title = element_text(hjust = 0.5),
         axis.title.x = element_blank())
 
