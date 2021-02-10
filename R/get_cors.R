@@ -76,7 +76,6 @@ cvlearner_cors <- get_cors(bnabs)
 learner_cors <- get_cors(bnabs)
 
 '''
-[1] "vrc34.01 done"
  [1] "Problematic bnabs 2f5"      "Problematic bnabs 2g12"     "Problematic bnabs 4e10"    
 [4] "Problematic bnabs b12"      "Problematic bnabs pg16"     "Problematic bnabs pg9"     
 [7] "Problematic bnabs pgt121"   "Problematic bnabs pgt128"   "Problematic bnabs pgt135"  
