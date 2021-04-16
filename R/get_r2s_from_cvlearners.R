@@ -179,8 +179,9 @@ get_est_and_ci <- function(idx = 1, fit_list = NULL, Rsquared = FALSE, constant 
   return(list(est = Mean[1], ci = c(Lower[1], Upper[1])))
 }
 
-bnabs = c("10-1074", "10-996", "2f5", "2g12", "35o22",
-         "3bnc117", "4e10", "8anc195", "b12", "ch01", "hj16",
+bnabs <- c("10-1074", "10-996", "2f5", "2g12", "35o22",
+         "3bnc117", "4e10", "8anc195", "b12", "ch01", 
+         "dh270.1", "dh270.5", "dh270.6", "hj16",
          "nih45-46", "pg16", "pg9", "pgdm1400", "pgt121", 
          "pgt128", "pgt135", "pgt145", "pgt151", "vrc-ch31",
         "vrc-pg04", "vrc01", "vrc03", "vrc07", "vrc26.08",
@@ -199,43 +200,46 @@ get_all_est_and_cis <- function(bnabs){
     
     #read in ic50 and ic80 cvlearner objects
     ic50_file <- Sys.glob(paste0("./new_docker_output/", bnab, "/cvlearner_ic50","*", ".rds"))
-    if(length(ic50_file > 0)){ #if that file exists (some containers failed)
+    if(length(ic50_file > 0)){ #proceed only if that file exists (some containers failed)
       ic50_cvlearner <- readRDS(ic50_file)
+      
+      #prepare each cvlearner obj using summary.myCV.SuperLearner
+      opts = list(1, 2, 3) # need an arbitrary list of length > 1
+      ic50_cv_summary <- summary.myCV.SuperLearner(object = ic50_cvlearner, opts = opts)
+      
+      #get the cvr2, cil, ciu, n and add to df
+      ic50_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic50_cv_summary), Rsquared = TRUE)
+      ic50_r2 <- ic50_est_and_ci$est
+      ic50_cil <- ic50_est_and_ci$ci[1]
+      ic50_ciu <- ic50_est_and_ci$ci[2]
+      n_ic50 <- length(ic50_cvlearner$Y)
+      ic50_row <- list("ic50", bnab, ic50_r2, ic50_cil, ic50_ciu, n_ic50)
+      
+      #add the new rows to the dataframe
+      cvr2_df[nrow(cvr2_df)+1,] <- ic50_row
     }
+    
     
     ic80_file <- Sys.glob(paste0("./new_docker_output/", bnab, "/cvlearner_ic80","*", ".rds"))
     if(length(ic80_file) > 0){ #if that file exists (some containers failed)
       ic80_cvlearner <- readRDS(ic80_file)
+      
+      #prepare each cvlearner obj using summary.myCV.SuperLearner
+      opts = list(1, 2, 3) # need an arbitrary list of length > 1
+      ic80_cv_summary <- summary.myCV.SuperLearner(object = ic80_cvlearner, opts = opts)
+      
+      #get the cvr2, cil, ciu, n and add to df
+      ic80_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic80_cv_summary), Rsquared = TRUE)
+      ic80_r2 <- ic80_est_and_ci$est
+      ic80_cil <- ic80_est_and_ci$ci[1]
+      ic80_ciu <- ic80_est_and_ci$ci[2]
+      n_ic80 <- length(ic80_cvlearner$Y)
+      ic80_row <- list("ic80", bnab, ic80_r2, ic80_cil, ic80_ciu, n_ic80)
+      
+      #add the new rows to the dataframe
+      cvr2_df[nrow(cvr2_df)+1,] <- ic80_row
     }
-    
-    
-    #prepare each cvlearner obj using summary.myCV.SuperLearner
-    opts = list(1, 2, 3) # need an arbitrary list of length > 1
-    ic50_cv_summary <- summary.myCV.SuperLearner(object = ic50_cvlearner, opts = opts)
-    ic80_cv_summary <- summary.myCV.SuperLearner(object = ic80_cvlearner, opts = opts)
-    
-    #get the cvr2, cil, ciu, n and add to df
-    ic50_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic50_cv_summary), Rsquared = TRUE)
-    ic50_r2 <- ic50_est_and_ci$est
-    ic50_cil <- ic50_est_and_ci$ci[1]
-    ic50_ciu <- ic50_est_and_ci$ci[2]
-    n_ic50 <- length(ic50_cvlearner$Y)
-    ic50_row <- list("ic50", bnab, ic50_r2, ic50_cil, ic50_ciu, n_ic50)
-
-    
-    ic80_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic80_cv_summary), Rsquared = TRUE)
-    ic80_r2 <- ic80_est_and_ci$est
-    ic80_cil <- ic80_est_and_ci$ci[1]
-    ic80_ciu <- ic80_est_and_ci$ci[2]
-    n_ic80 <- length(ic80_cvlearner$Y)
-    ic80_row <- list("ic80", bnab, ic80_r2, ic80_cil, ic80_ciu, n_ic80)
-    
-    
-    #add the new rows to the dataframe
-    cvr2_df[nrow(cvr2_df)+1,] <- ic50_row
-    cvr2_df[nrow(cvr2_df)+1,] <- ic80_row
   }
-  
   return(cvr2_df)
 }
 
