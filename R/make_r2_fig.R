@@ -166,6 +166,6 @@ compare_plot <- plot_grid(
   nrow = 2, rel_heights = c(1, 0.02)
 )
 
-ggsave(filename = "./R_output/r2_fig.png",
+ggsave(filename = "./R_output/new_r2_fig.png",
        plot = compare_plot,
        width = 45, height = 20, units = "cm")
