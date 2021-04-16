@@ -15,7 +15,7 @@ library("here")
 
 # create a tibble with the data
 #load(here("py_output", "cvr2_df.cvs"))
-rslt_df <- read.csv(file = "./Python/cvr2_df.csv")
+rslt_df <- read.csv(file = "./R_output/new_cvr2_df.csv")
 rslt_df <- rslt_df[complete.cases(rslt_df), ] #remove any NA rows
 
 compare_tib <- rslt_df %>%

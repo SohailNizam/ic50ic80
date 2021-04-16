@@ -1,3 +1,4 @@
+#Functions from slapnap/code/00_utils.R to prepare a given cvlearner object
 summary.myCV.SuperLearner <- function (object, obsWeights = NULL, method = NULL, opts, ...) {
   if ("env" %in% names(object)) {
     env = object$env
@@ -161,8 +162,6 @@ summary.myCV.SuperLearner <- function (object, obsWeights = NULL, method = NULL,
   class(out) <- "summary.myCV.SuperLearner"
   return(out)
 }
-
-
 get_est_and_ci <- function(idx = 1, fit_list = NULL, Rsquared = FALSE, constant = qnorm(0.975)){
   cv_fit_table <- fit_list[[idx]]
   Mean <- cv_fit_table$Table$Ave
@@ -180,16 +179,69 @@ get_est_and_ci <- function(idx = 1, fit_list = NULL, Rsquared = FALSE, constant 
   return(list(est = Mean[1], ci = c(Lower[1], Upper[1])))
 }
 
-ic80_10_1074 <- readRDS("/Users/sohailnizam/slapnap_redo/docker_output/cvlearner_ic80_10-1074_13Apr2021.rds")
-ic50_10_1074 <- readRDS("/Users/sohailnizam/slapnap/slapnap_supplemental/ic50ic80/new_docker_output/10-1074/cvlearner_ic50_10-1074_08Apr2021.rds")
-
-length(ic50_10_1074$Y)
-length(ic80_10_1074$Y)
-
-foo <- summary.myCV.SuperLearner(object = ic80_10_1074, opts = opts)
-get_est_and_ci(idx = 1, fit_list = list(ic50_10_1074), Rsquared = TRUE)
-get_est_and_ci(idx = 1, fit_list = list(foo), Rsquared = TRUE)
+bnabs = c("10-1074", "10-996", "2f5", "2g12", "35o22",
+         "3bnc117", "4e10", "8anc195", "b12", "ch01", "hj16",
+         "nih45-46", "pg16", "pg9", "pgdm1400", "pgt121", 
+         "pgt128", "pgt135", "pgt145", "pgt151", "vrc-ch31",
+        "vrc-pg04", "vrc01", "vrc03", "vrc07", "vrc26.08",
+        "vrc26.25", "vrc29.03", "vrc34.01", "vrc38.01")
 
 
+
+#A function to cycle through each nab and get ic50 and ic80 r2, ub, lb from a prepared cvlearner object
+get_all_est_and_cis <- function(bnabs){
   
-#opts list with attr 'learner', length > 1
+  #initialize a df with cols: method (ic50/ic80), bnab, r2,  cil, ciu, n
+  cvr2_df <- data.frame(matrix(ncol = 6, nrow = 0))
+  colnames(cvr2_df) <- c("method", "bnab", "r2", "cil", "ciu", "n")
+  
+  for(bnab in bnabs){
+    
+    #read in ic50 and ic80 cvlearner objects
+    ic50_file <- Sys.glob(paste0("./new_docker_output/", bnab, "/cvlearner_ic50","*", ".rds"))
+    if(length(ic50_file > 0)){ #if that file exists (some containers failed)
+      ic50_cvlearner <- readRDS(ic50_file)
+    }
+    
+    ic80_file <- Sys.glob(paste0("./new_docker_output/", bnab, "/cvlearner_ic80","*", ".rds"))
+    if(length(ic80_file) > 0){ #if that file exists (some containers failed)
+      ic80_cvlearner <- readRDS(ic80_file)
+    }
+    
+    
+    #prepare each cvlearner obj using summary.myCV.SuperLearner
+    opts = list(1, 2, 3) # need an arbitrary list of length > 1
+    ic50_cv_summary <- summary.myCV.SuperLearner(object = ic50_cvlearner, opts = opts)
+    ic80_cv_summary <- summary.myCV.SuperLearner(object = ic80_cvlearner, opts = opts)
+    
+    #get the cvr2, cil, ciu, n and add to df
+    ic50_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic50_cv_summary), Rsquared = TRUE)
+    ic50_r2 <- ic50_est_and_ci$est
+    ic50_cil <- ic50_est_and_ci$ci[1]
+    ic50_ciu <- ic50_est_and_ci$ci[2]
+    n_ic50 <- length(ic50_cvlearner$Y)
+    ic50_row <- list("ic50", bnab, ic50_r2, ic50_cil, ic50_ciu, n_ic50)
+
+    
+    ic80_est_and_ci <- get_est_and_ci(idx = 1, fit_list = list(ic80_cv_summary), Rsquared = TRUE)
+    ic80_r2 <- ic80_est_and_ci$est
+    ic80_cil <- ic80_est_and_ci$ci[1]
+    ic80_ciu <- ic80_est_and_ci$ci[2]
+    n_ic80 <- length(ic80_cvlearner$Y)
+    ic80_row <- list("ic80", bnab, ic80_r2, ic80_cil, ic80_ciu, n_ic80)
+    
+    
+    #add the new rows to the dataframe
+    cvr2_df[nrow(cvr2_df)+1,] <- ic50_row
+    cvr2_df[nrow(cvr2_df)+1,] <- ic80_row
+  }
+  
+  return(cvr2_df)
+}
+
+#call function to get cvr2 dataframe
+cvr2_df <- get_all_est_and_cis(bnabs)
+
+#write to csv
+write.csv(cvr2_df, file = "./R_output/new_cvr2_df.csv")
+
