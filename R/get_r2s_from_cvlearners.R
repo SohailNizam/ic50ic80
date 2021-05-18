@@ -194,7 +194,7 @@ get_all_est_and_cis <- function(bnabs){
   
   #initialize a df with cols: method (ic50/ic80), bnab, r2,  cil, ciu, n
   cvr2_df <- data.frame(matrix(ncol = 6, nrow = 0))
-  colnames(cvr2_df) <- c("method", "bnab", "r2", "cil", "ciu", "n")
+  colnames(cvr2_df) <- c("Method", "bnab", "r2", "cil", "ciu", "n")
   
   for(bnab in bnabs){
     

@@ -16,7 +16,7 @@ library("here")
 # create a tibble with the data
 #load(here("py_output", "cvr2_df.cvs"))
 rslt_df <- read.csv(file = "./R_output/new_cvr2_df.csv")
-rslt_df <- rslt_df[complete.cases(rslt_df), ] #remove any NA rows
+#rslt_df <- rslt_df[complete.cases(rslt_df), ] #remove any NA rows
 
 compare_tib <- rslt_df %>%
   as_tibble() %>%
@@ -46,8 +46,8 @@ epitope_labs <- unique(compare_tib$epitope)[order(unique(compare_tib$epitope), d
 cd4bs_plot <- compare_tib %>%
   filter(epitope == "CD4bs") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   #geom_text(aes(label = n, hjust = 1.5)) + 
@@ -66,8 +66,8 @@ cd4bs_plot <- compare_tib %>%
 fusion_plot <- compare_tib %>%
   filter(epitope == "Fusion peptide") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
@@ -84,8 +84,8 @@ fusion_plot <- compare_tib %>%
 mper_plot <- compare_tib %>%
   filter(epitope == "MPER") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n)) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
@@ -102,8 +102,8 @@ mper_plot <- compare_tib %>%
 subunit_plot <- compare_tib %>%
   filter(epitope == "Subunit interface") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
@@ -120,8 +120,8 @@ subunit_plot <- compare_tib %>%
 v1v2_plot <- compare_tib %>%
   filter(epitope == "V1V2") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
@@ -138,8 +138,8 @@ v1v2_plot <- compare_tib %>%
 v3_plot <- compare_tib %>%
   filter(epitope == "V3") %>%
   ggplot(aes(x = forcats::fct_reorder(as.factor(bnab), desc(epitope)),
-             y = r2, ymin = cil, ymax = ciu, color = method,
-             group = paste0(epitope, "_", method))) +
+             y = r2, ymin = cil, ymax = ciu, color = Method,
+             group = paste0(epitope, "_", Method))) +
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) + 
   geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
