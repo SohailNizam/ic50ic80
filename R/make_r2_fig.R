@@ -45,6 +45,7 @@ epitope_labs <- unique(compare_tib$epitope)[order(unique(compare_tib$epitope), d
 point_size <- .5
 font_size <- 5.5
 line_size <- 0.25
+ci_line_size <- .1
 continuous_scale <- c(1/3, 2)
 
 cd4bs_plot <- compare_tib %>%
@@ -56,7 +57,7 @@ cd4bs_plot <- compare_tib %>%
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) + 
   #geom_text(aes(label = n, hjust = 1.5)) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
@@ -82,7 +83,7 @@ fusion_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
@@ -107,7 +108,7 @@ mper_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n)) +
   scale_size_continuous(range = continuous_scale) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) + #may need to update
@@ -136,7 +137,7 @@ subunit_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
@@ -161,7 +162,7 @@ v1v2_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
@@ -186,7 +187,7 @@ v3_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) + 
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = .1, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
                 position = position_dodge(width = 0.75, preserve = "total")) + 
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
   ylim(c(-.5, 1)) +
@@ -220,6 +221,7 @@ compare_plot <- plot_grid(
 
 #TODO
 #colors -> gray scale
+#font size
 
 
 #ggsave(filename = "/Users/sohailnizam/Desktop/test_r2_fig.png",
