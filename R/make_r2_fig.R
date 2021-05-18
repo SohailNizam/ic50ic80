@@ -45,8 +45,9 @@ epitope_labs <- unique(compare_tib$epitope)[order(unique(compare_tib$epitope), d
 point_size <- .5
 font_size <- 5.5
 line_size <- 0.25
-ci_line_size <- .1
-continuous_scale <- c(1/3, 2)
+ci_line_size <- .3
+ci_line_width <- .8
+continuous_scale <- c(.2, 6/5)
 
 cd4bs_plot <- compare_tib %>%
   filter(epitope == "CD4bs") %>%
@@ -57,9 +58,9 @@ cd4bs_plot <- compare_tib %>%
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) + 
   #geom_text(aes(label = n, hjust = 1.5)) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .5,
                 position = position_dodge(width = 0.75, preserve = "total")) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) + #may need to update
   ylab(expression(paste("CV-", R^2))) + 
   ggtitle("CD4bs") +
@@ -73,7 +74,8 @@ cd4bs_plot <- compare_tib %>%
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
         plot.margin = margin(0, 0.1, 0.2, 0.1, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 fusion_plot <- compare_tib %>%
   filter(epitope == "Fusion peptide") %>%
@@ -83,9 +85,9 @@ fusion_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .3,
                 position = position_dodge(width = 0.75, preserve = "total")) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) + #may need to update
   labs(y = NULL) +
   ggtitle("Fusion peptide") +
@@ -98,7 +100,8 @@ fusion_plot <- compare_tib %>%
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
         plot.margin = margin(0, 0.1, 0.2, 0, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 mper_plot <- compare_tib %>%
   filter(epitope == "MPER") %>%
@@ -108,9 +111,9 @@ mper_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n)) +
   scale_size_continuous(range = continuous_scale) + 
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .3,
                 position = position_dodge(width = 0.75, preserve = "total")) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) + #may need to update
   labs(y = NULL) +
   ggtitle("MPER") +
@@ -123,11 +126,18 @@ mper_plot <- compare_tib %>%
         legend.text = element_text(size = font_size * .75),
         legend.margin = margin(0, 0, 0.1, -0.15, "cm"),
         legend.box.margin = margin(0, 0, 0.1, -0.15, "cm"),
+        legend.spacing.y = unit(.001, 'cm'),
+        legend.key.size = unit(.5, "lines"),
         axis.text = element_text(size = font_size * .75),
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
         plot.margin = margin(0, 0.15, 0.2, 0, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+  #guides(shape = guide_legend(override.aes = list(size = 0.5))) + 
+  #guides(color = guide_legend(override.aes = list(size = 0.5))) + 
+  #theme(legend.title = element_text(size = 3), 
+   #     legend.text = element_text(size = 3)) + 
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 subunit_plot <- compare_tib %>%
   filter(epitope == "Subunit interface") %>%
@@ -137,9 +147,9 @@ subunit_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .25,
                 position = position_dodge(width = 0.75, preserve = "total")) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) +
   labs(y = NULL) +
   ggtitle("Subunit interface") +
@@ -152,7 +162,8 @@ subunit_plot <- compare_tib %>%
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
         plot.margin = margin(0, 0.1, 0.2, 0, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 v1v2_plot <- compare_tib %>%
   filter(epitope == "V1V2") %>%
@@ -162,9 +173,9 @@ v1v2_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) +
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .4,
                 position = position_dodge(width = 0.75, preserve = "total")) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) +
   ylab(expression(paste("CV-", R^2))) +
   ggtitle("V1V2") +
@@ -177,7 +188,8 @@ v1v2_plot <- compare_tib %>%
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
         plot.margin = margin(0.1, 0.1, 0.1, 0.1, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 v3_plot <- compare_tib %>%
   filter(epitope == "V3") %>%
@@ -187,9 +199,9 @@ v3_plot <- compare_tib %>%
   geom_point(position = position_dodge(width = 0.75, preserve = "total"),
              aes(size = n), show.legend = FALSE) + 
   scale_size_continuous(range = continuous_scale) +
-  geom_errorbar(aes(ymin = cil, ymax = ciu), width = ci_line_size, 
+  geom_errorbar(aes(ymin = cil, ymax = ciu), size = ci_line_size, width = .5,
                 position = position_dodge(width = 0.75, preserve = "total")) + 
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red", size = line_size) +
   ylim(c(-.5, 1)) +
   labs(y = NULL) +
   ggtitle("V3") +
@@ -201,8 +213,9 @@ v3_plot <- compare_tib %>%
         axis.text = element_text(size = font_size * .75),
         axis.line = element_line(size = line_size),
         axis.ticks = element_line(size = line_size),
-        plot.margin = margin(0.1, 0, 0.1, 0, "cm")) + 
-  background_grid(size.major = line_size, size.minor = line_size)
+        plot.margin = margin(0.1, 0.1, 0.1, 0, "cm")) + 
+  background_grid(size.major = line_size, size.minor = line_size) +
+  scale_color_manual(values = c("#808080", "#A9A9A9"))
 
 
 compare_plot <- plot_grid(
@@ -218,15 +231,6 @@ compare_plot <- plot_grid(
   nrow = 2, rel_heights = c(1, 0.02)
 )
 
-
-#TODO
-#colors -> gray scale
-#font size
-
-
-#ggsave(filename = "/Users/sohailnizam/Desktop/test_r2_fig.png",
- #      plot = compare_plot,
-  #     width = 45, height = 20, units = "cm")
 
 fig_width <- 5
 fig_height <- 2.25
